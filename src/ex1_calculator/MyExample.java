@@ -1,3 +1,5 @@
+package ex1_calculator;
+
 public class MyExample {
     public static void main(String[] args) {
         // 구간 별 통행료 계산하기
