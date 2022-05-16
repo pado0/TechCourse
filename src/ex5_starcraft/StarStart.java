@@ -1,8 +1,6 @@
 package ex5_starcraft;
 
-import java.util.Scanner;
-
-public class Main {
+public class StarStart {
 
     public static void main(String[] args) {
 
