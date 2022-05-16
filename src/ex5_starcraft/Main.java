@@ -26,9 +26,9 @@ public class Main {
         System.out.println("[안내] 상대 유닛 정보를 입력해 주세요.");
         scanUnit.scanUnitInfo(); // 정보입력함수
         Unit enemyUnit = new Unit(scanUnit.getName(),
-                scanUnit.getOffensePoint(),
-                scanUnit.getDefensePoint(),
-                scanUnit.getHp()); // 생성자로 정보 세팅
+                                    scanUnit.getOffensePoint(),
+                                    scanUnit.getDefensePoint(),
+                                    scanUnit.getHp()); // 생성자로 정보 세팅
         enemyUnit.printUnitInfo(); // 유닛 정보 출력함수
         System.out.println("========================================");
 
