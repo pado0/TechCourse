@@ -24,7 +24,7 @@ public class Order {
         this.menuNum = scanner.nextInt();
         if (!IntStream.of(numList).anyMatch(x -> x == this.menuNum)) {
             System.out.println("[안내]메뉴에 포함된 번호를 입력하여 주세요.\n");
-            chooseNum();
+            chooseNum(); // 재귀로 호출
         }
     }
 
@@ -39,7 +39,7 @@ public class Order {
         if(this.orderQuantity >= 100){
             System.out.println("[경고]" + this.orderQuantity+"개는 입력하실 수 없습니다.");
             System.out.println("[경고] 수량 선택 화면으로 돌아갑니다.");
-            chooseOrderQuantity();
+            chooseOrderQuantity(); // 재귀로 호출
         }
     }
 
