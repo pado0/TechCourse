@@ -2,6 +2,16 @@ package Daily_algo;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println(ex21_largestProductOfThree.largestProductOfThree(new int[]{-50, -20, -30, -5, 40}));
+        func(new int[10]);
+
+    }
+
+    public static void func(int[] arr){
+        arr[0] = 0;
+        arr[1] = 1;
+
+        for (int i : arr) {
+            System.out.println("i = " + i);
+        }
     }
 }
