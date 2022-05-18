@@ -1,24 +1,25 @@
 package Daily_algo
 
 fun main(args: Array<String>) {
-    val person = Person()
-    person.age = 11;
-    person.showMe()
+    val list = listOf(1, 2, 3)
+    println(list) // toString이 디폴트 출력으로 고정되어있음.
+    println(joinToString(list, ";", "[", "]"))
+    println(joinToString(list, postfix = "k", prefix = "b", separator = "|"))
+    println(joinToString(list, postfix = "k", prefix = "b"))
+
 }
 
-class Person{
-    var name: String = ""
-        get(): String = "getter test"
-
-    var age : Int = 0;
-
-    fun showMe(){
-        println("$name, $age")
-    // showMe에서 name 읽을때 자동으로 get()호출. setter같은데;...?
-        // 왜 hyo가 안들어가는지 이해가 안간다.
-    // showMe에서 name 호출 -> person.name 이 됨
-        // == person.getName == 커스텀 게터의 리턴값 getter test가 반환됨
-    //person.getName()
-
-   }
+fun <T> joinToString(
+    collection: Collection<T>,
+    separator: String = " * ",
+    prefix: String = "{ ",
+    postfix: String = " }"
+): String {
+    val result = java.lang.StringBuilder(prefix)
+    for ((index, element) in collection.withIndex()) {
+        if(index > 0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString();
 }
