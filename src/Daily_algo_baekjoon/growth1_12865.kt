@@ -5,6 +5,7 @@ import kotlin.math.max
 
 fun main(args: Array<String>) {
 
+    // 평범한 배낭 코틀린 풀이
     // 입력 스캐너 세팅
     var scanner = Scanner(System.`in`)
 
