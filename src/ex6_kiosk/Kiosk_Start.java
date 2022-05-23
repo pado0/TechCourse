@@ -1,10 +1,11 @@
 package ex6_kiosk;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Kiosk_Start {
     public static void main(String[] args) {
-
 
         System.out.println("[안내]안녕하세요. 김밥천국에 오신 것을 환영합니다.");
         System.out.println("------------------------------");
