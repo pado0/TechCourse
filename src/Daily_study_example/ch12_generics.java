@@ -5,7 +5,8 @@ import java.util.Comparator;
 
 public class ch12_generics {
     public static void main(String[] args) {
-
+        Basket basket = new Basket("String");
+        String a = (String) basket.getObject();
         Box<String> box = new Box<>();
         box.setItem("String 입니다.");
         System.out.println("box = " + box.getItem());
@@ -33,6 +34,21 @@ public class ch12_generics {
         T getItem() {
             return this.item;
         }
+    }
+}
+class Basket {
+    public Basket(Object object) {
+        this.object = object;
+    }
+
+    private Object object;
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
     }
 }
 
