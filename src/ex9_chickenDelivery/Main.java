@@ -34,6 +34,7 @@ public class Main {
             }
             if(n == 5) {
                 System.out.println("[안내] 이용해주셔서 감사합니다.");
+                return;
             }
         }
 
