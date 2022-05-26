@@ -11,24 +11,25 @@ public class ch14_stream {
         // 두 데이터소스 생성
         String[] strArr = {"aaa", "bbb", "ccc" , "abc"};
         List<String> list = Arrays.asList(strArr);
-
-
         List<Integer> list2 = new ArrayList<>();
         list2.add(1);
         list2.add(3);
         list2.add(2);
         list2.add(5);
 
+        Stream<Integer> stream = list2.stream();
 
-
+        int sum = stream.reduce(0, Integer::sum);
+        System.out.println("sum = " + sum);
         // 스트림 생성
         Stream<String> stream1 = list.stream();
         Stream<String> stream2 = Arrays.stream(strArr);
         Stream<String> stream3 = Arrays.stream(strArr);
 
+
         // 파이프라인 연산 수행
-        stream1.filter(str -> str.equals("aaa"))
-                .forEach(i -> System.out.println("i = " + i));
+        stream1.filter(str -> str.equals("aaa")).collect(Collectors.toList());
+                //.forEach(i -> System.out.println("i = " + i));
 
         stream2.map(s -> s.toUpperCase())
                 .forEach(i -> System.out.println(i));
