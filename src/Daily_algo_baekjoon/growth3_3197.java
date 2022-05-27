@@ -89,6 +89,7 @@ public class growth3_3197 {
         return true;
     }
 
+    // todo : 빙하에 막히면 막힌 빙하부터 다시 탐색할 수 있도록 조치.
     static int bfs(){
         int count = 0;
         char[][] flag = new char[1502][1502];
