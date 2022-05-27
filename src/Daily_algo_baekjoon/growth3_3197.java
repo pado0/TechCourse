@@ -7,10 +7,17 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
+// done : 빙하에 막히면 막힌 빙하부터 다시 탐색할 수 있도록 조치.
+// flag 전역으로 바꿔 이미 방문한 지역 다시방문 안함
+// 며칠 이동했는지 c로 표현하던거 삭제
+
+// todo: 빙하 녹이는 로직 n^2 * 2인데, *2 없애기
+
 //BFS
 public class growth3_3197 {
     static char[][] map = new char[1502][1502];
     static int[][] bird = new int[2][2];
+    static int[][] flag = new int[1502][1502]; // flag 전역으로 바꿔서 방문지 차단
     static int[] dx = {0, -1, 0, 1};
     static int[] dy = {1, 0, -1, 0};
     static int R, C;
@@ -57,7 +64,7 @@ public class growth3_3197 {
     static boolean melt() {
         boolean isIcd = false;
 
-        int[][] flag = new int[1502][1502];
+        int[][] mf = new int[1502][1502];
         for (int i = 1; i <= R; i++) {
             for (int j = 1; j <= C; j++) {
                 if (map[i][j] == 'X') {
@@ -67,7 +74,7 @@ public class growth3_3197 {
                         if (tx <= 0 || ty <= 0 || tx > R || ty > C) continue;
                         if (map[tx][ty] == '.') {
                             isIcd = true;
-                            flag[i][j] = 1; continue;
+                            mf[i][j] = 1; continue;
                         }
                     }
                 }
@@ -77,7 +84,7 @@ public class growth3_3197 {
         if(isIcd == false) return false;
         for (int i = 1; i <= R; i++) {
             for (int j = 1; j <= C; j++) {
-                if(flag[i][j] == 1) map[i][j] = '.';
+                if(mf[i][j] == 1) map[i][j] = '.';
             }
         }
 //        for (int i = 1; i <= R; i++) {
@@ -89,25 +96,29 @@ public class growth3_3197 {
         return true;
     }
 
-    // todo : 빙하에 막히면 막힌 빙하부터 다시 탐색할 수 있도록 조치.
+
     static int bfs(){
         int count = 0;
-        char[][] flag = new char[1502][1502];
+        //char[][] flag = new char[1502][1502];
         Queue<Integer> q = new LinkedList<>();
 
-        q.add(count);
+        //q.add(count);
         q.add(bird[0][0]);
         q.add(bird[0][1]);
-        flag[bird[0][0]][bird[0][1]] = 1;
+        flag[bird[0][0]][bird[0][1]] = 1; //  빙하 막히면 막힌 빙하무터 다시 탐색하도록 백조 위치 변경
 
         while (!q.isEmpty()) {
-            int c = q.poll();
+            //int c = q.poll();
             int x = q.poll();
             int y = q.poll();
+
+            // 백조 위치 변경
+            bird[0][0] = x;
+            bird[0][1] = y;
             //System.out.println("x = " + x +"  y = " + y +"   c = " + c);
 
             // 백조 찾으면 c를 리턴
-            if(x == bird[1][0] && y == bird[1][1]) return c;
+            if(x == bird[1][0] && y == bird[1][1]) return 1;
 
 
             for (int t = 0; t < 4; t++) {
@@ -116,7 +127,7 @@ public class growth3_3197 {
                 if(tx<= 0 || ty <= 0 || tx > R || ty > C) continue;
                 if (map[tx][ty] == '.' && flag[tx][ty] == 0) {
                     flag[tx][ty] = 1;
-                    q.add(++c);
+                    // q.add(++c);
                     q.add(tx);
                     q.add(ty);
                 }
