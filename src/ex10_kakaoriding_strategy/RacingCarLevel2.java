@@ -20,11 +20,7 @@ public class RacingCarLevel2 implements RacingCar {
     //        void start();  //게임시작  - 문구 출력
     @Override
     public void start() {
-        System.out.println("=".repeat(50) + "\n" + "******  카카오 라이더에 오신걸 환영합니다. ******\n"
-                + "=".repeat(50) + "\n");
-        System.out.println("[안내] 이름을 입력해 주세요.");
-        userName = Main.sc.nextLine();
-        System.out.printf("%s님, Racing 게임을 시작합니다.\n", userName);
+        System.out.printf("%s님, 레벨업을 진행합니다.\n", this.userName);
     }
 
     //        void accelerate(); //가속
