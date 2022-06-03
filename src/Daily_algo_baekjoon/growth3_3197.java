@@ -1,139 +1,143 @@
 package Daily_algo_baekjoon;
 
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
-// done : 빙하에 막히면 막힌 빙하부터 다시 탐색할 수 있도록 조치.
-// flag 전역으로 바꿔 이미 방문한 지역 다시방문 안함
-// 며칠 이동했는지 c로 표현하던거 삭제
-
-// todo: 빙하 녹이는 로직 n^2 * 2인데, *2 없애기
-
-//BFS
 public class growth3_3197 {
-    static char[][] map = new char[1502][1502];
-    static int[][] bird = new int[2][2];
-    static int[][] flag = new int[1502][1502]; // flag 전역으로 바꿔서 방문지 차단
-    static int[] dx = {0, -1, 0, 1};
-    static int[] dy = {1, 0, -1, 0};
-    static int R, C;
 
+    private static int R;
+    private static int C;
+    private static char[][] map;
+    private static int[][] melt;
+    private static int day;
+    private static int[] x_move = {1, 0, -1, 0};
+    private static int[] y_move = {0, 1, 0, -1};
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String firstLine = in.readLine();
 
-        Scanner scanner = new Scanner(System.in);
-        R = scanner.nextInt();
-        C = scanner.nextInt();
-        scanner.nextLine();
-        int x = 0, y = 0;
+        R = Integer.parseInt(firstLine.split(" ")[0]);
+        C = Integer.parseInt(firstLine.split(" ")[1]);
 
-        for (int i = 1; i <= R; i++) {
-            String s = scanner.nextLine();
+        map = new char[R][C];
+        List<Point> swan = new ArrayList<>();
 
-            for (int j = 1; j <= C; j++) {
-                map[i][j] = s.charAt(j-1);
-                // 0. 백조를 넣고
-                if(map[i][j] == 'L') {
-                    map[i][j] = '.';
-                    bird[x][y++] = i;
-                    bird[x++][y--] = j;
+        for (int i = 0; i < R; i++) {
+            String input = in.readLine();
+
+            for (int j = 0; j < C; j++) {
+                map[i][j] = input.charAt(j);
+
+                if (map[i][j] == 'L') {
+                    swan.add(new Point(i, j));
                 }
-
             }
         }
 
-        boolean isIce = true;
-        int sol = 0;
-        while(isIce) {
+        in.close();
 
-            // 1. 백조끼리 만날 수 있는지 확인
-            int chk = bfs();
-            //System.out.println("chk = " + chk);
-            if(chk != -1 ) break;
-            // 2. 빙하를 녹이고
-            isIce = melt();
-            sol++;
+        melt = melt();
+
+        int left = 0;
+        int right = day;
+        int min = Integer.MAX_VALUE;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (isReachable(swan.get(0), swan.get(1), mid)) {
+                min = Math.min(min, mid);
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
         }
 
-        System.out.println(sol);
+        System.out.println(min);
     }
-    static boolean melt() {
-        boolean isIcd = false;
 
-        int[][] mf = new int[1502][1502];
-        for (int i = 1; i <= R; i++) {
-            for (int j = 1; j <= C; j++) {
-                if (map[i][j] == 'X') {
-                    for (int t = 0; t < 4; t++) {
-                        int tx = i + dx[t];
-                        int ty = j + dy[t];
-                        if (tx <= 0 || ty <= 0 || tx > R || ty > C) continue;
-                        if (map[tx][ty] == '.') {
-                            isIcd = true;
-                            mf[i][j] = 1; continue;
-                        }
+    private static boolean isReachable(Point point1, Point point2, int limit) {
+        boolean[][] visited = new boolean[R][C];
+
+        Queue<Point> queue = new LinkedList<>();
+        queue.add(point1);
+        visited[point1.x][point2.y] = true;
+
+        while (!queue.isEmpty()) {
+            Point point = queue.poll();
+
+            for (int k = 0; k < 4; k++) {
+                int new_x = point.x + x_move[k];
+                int new_y = point.y + y_move[k];
+                if (inArea(new_x, new_y) && !visited[new_x][new_y] && melt[new_x][new_y] <= limit) {
+                    visited[new_x][new_y] = true;
+
+                    if (new_x == point2.x && new_y == point2.y) {
+                        return true;
+                    }
+
+                    queue.offer(new Point(new_x, new_y));
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static int[][] melt() {
+        boolean[][] visited = new boolean[R][C];
+        int[][] melt = new int[R][C];
+
+        Queue<Point> queue = new LinkedList<>();
+
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
+                if (map[i][j] == 'L' || map[i][j] == '.') {
+                    queue.offer(new Point(i, j));
+                    visited[i][j] = true;
+                }
+            }
+        }
+
+        day = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            day++;
+
+            for (int i = 0; i < size; i++) {
+                Point point = queue.poll();
+
+                for (int j = 0; j < 4; j++) {
+                    int new_x = point.x + x_move[j];
+                    int new_y = point.y + y_move[j];
+                    if (inArea(new_x, new_y) && !visited[new_x][new_y] && map[new_x][new_y] == 'X') {
+                        melt[new_x][new_y] = day;
+                        visited[new_x][new_y] = true;
+
+                        queue.offer(new Point(new_x, new_y));
                     }
                 }
             }
         }
 
-        if(isIcd == false) return false;
-        for (int i = 1; i <= R; i++) {
-            for (int j = 1; j <= C; j++) {
-                if(mf[i][j] == 1) map[i][j] = '.';
-            }
-        }
-//        for (int i = 1; i <= R; i++) {
-//            for (int j = 1; j <= C; j++) {
-//                System.out.print(map[i][j]);
-//            }
-//            System.out.println();
-//        }
-        return true;
+        return melt;
     }
 
+    private static boolean inArea(int x, int y) {
+        return x >= 0 && y >= 0 && x < R && y < C;
+    }
 
-    static int bfs(){
-        int count = 0;
-        //char[][] flag = new char[1502][1502];
-        Queue<Integer> q = new LinkedList<>();
+    static class Point {
+        int x;
+        int y;
 
-        //q.add(count);
-        q.add(bird[0][0]);
-        q.add(bird[0][1]);
-        flag[bird[0][0]][bird[0][1]] = 1; //  빙하 막히면 막힌 빙하무터 다시 탐색하도록 백조 위치 변경
-
-        while (!q.isEmpty()) {
-            //int c = q.poll();
-            int x = q.poll();
-            int y = q.poll();
-
-            // 백조 위치 변경
-            bird[0][0] = x;
-            bird[0][1] = y;
-            //System.out.println("x = " + x +"  y = " + y +"   c = " + c);
-
-            // 백조 찾으면 c를 리턴
-            if(x == bird[1][0] && y == bird[1][1]) return 1;
-
-
-            for (int t = 0; t < 4; t++) {
-                int tx = x + dx[t];
-                int ty = y + dy[t];
-                if(tx<= 0 || ty <= 0 || tx > R || ty > C) continue;
-                if (map[tx][ty] == '.' && flag[tx][ty] == 0) {
-                    flag[tx][ty] = 1;
-                    // q.add(++c);
-                    q.add(tx);
-                    q.add(ty);
-                }
-            }
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
-
-        return -1;
     }
 }
