@@ -26,7 +26,9 @@ public class Main {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         RacingCarSelect racingCarSelect = new RacingCarSelect();
+
         racingCarSelect.start(selectRacingCarLevel1());
         racingCarSelect.accelerate(selectRacingCarLevel1());
         racingCarSelect.accelerate(selectRacingCarLevel1());
@@ -34,8 +36,6 @@ public class Main {
         racingCarSelect.start(selectRacingCarLevel2());
         racingCarSelect.accelerate(selectRacingCarLevel2());
         racingCarSelect.accelerate(selectRacingCarLevel2());
-
-
 
     }
 
