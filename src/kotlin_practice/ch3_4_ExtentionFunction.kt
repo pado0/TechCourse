@@ -12,7 +12,7 @@ fun Student.firstName(): Char = this.name[0]
 
 fun main(args : Array<String>){
     val student = Student("Tina", 10)
-    println(student.firstName())
+    //println(student.firstName())
 
 
     val list = listOf("args: ", *args)
