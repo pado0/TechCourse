@@ -3,6 +3,13 @@ package kotlin_practice;
 fun main(){
     println(PrivateUser("hyo"))
     println(SubscribingUser("gywls@namve.rocm").nickname) // .nickname 형식으로 getter 호출.
+
+    var testGetterSetter = TestGetterSetter("name", 123)
+    println(testGetterSetter.memberName)
+    println(testGetterSetter.memberId)
+
+    testGetterSetter.memberId = 345 // 내부적으로 setter로 동작
+    println("testGetterSetter = ${testGetterSetter.memberId}")
 }
 
 interface UserI {
@@ -19,3 +26,5 @@ class SubscribingUser(val email: String) : UserI{
         get() = email.substringBefore("@") // 커스텀 게터 선언
 }
 
+
+class TestGetterSetter(var memberName: String, var memberId: Int)
